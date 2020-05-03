@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.mybatis.mapper.SafeTrade">
+	<!-- 메뉴 목록 -->
+	<select id="menu" resultType="com.bit.mybatis.MenuGroupVO">
+		select * from menu_group	
+	</select>
+	
+	<!-- 큰 목록 -->
+	<select id="">
+		select * from big_group
+	</select>
+	
+	<!-- 로그인 -->
+	<select id="user" resultType="com.bit.mybatis.MemberVO" parameterType="com.bit.mybatis.MemberVO">
+		select * from member where id=#{id} and pwd=#{pwd}	
+	</select>
+	
+	<!-- 아이디 중복 체크 -->
+	<select id="checkID" parameterType="String" resultType="com.bit.mybatis.MemberVO">
+		select * from member where id=#{id}
+	</select>
+	
+	<!-- 회원가입 -->
+	<insert id="memberjoinInsert" parameterType="com.bit.mybatis.MemberVO">
+		insert into member values (#{id}, #{pwd}, #{name}, #{address}, #{gender}, #{phone}, 'u', 0, 0, sysdate)
+	</insert>
+	
+	<!-- 제품 리스트(전체) -->
+	<select id="productAllList" resultType="com.bit.mybatis.SellingListVO">
+		select * from selling_list where selling_state != 3 and selling_state != 4 and selling_state != 5
+	</select>
+	
+	<!-- 제품 상세정보 -->
+	<select id="productDetail" resultType="com.bit.mybatis.SellingListVO" parameterType="String">
+		select * from selling_list where selling_list_num=#{selling_list_num} and selling_state != 3 and selling_state != 4 and selling_state != 5
+	</select>
+	
+	<!-- 제품 등록 -->
+	<insert id="insertProduct" parameterType="com.bit.mybatis.SellingListVO">
+		insert into selling_list values(selling_list_seq.nextval, 'd', 'home', 
+		#{selling_list_title}, #{seller_id}, #{selling_list_content}, #{selling_item_image}, 
+		#{selling_count}, 0, #{selling_price}, #{delivery_price}, sysdate, #{selling_product}, 
+		#{selling_product_quality}, #{trade_phone_num}, 1, 0, #{mid_group_num})
+	</insert>
+	
+	<!-- 제품 수정 -->
+	<update id="updateProduct" parameterType="com.bit.mybatis.SellingListVO">
+		update selling_list set selling_list_title = #{selling_list_title}, 
+		selling_list_content = #{selling_list_content}, 
+		selling_item_image = #{selling_item_image}, selling_count = #{selling_count}, 
+		selling_price = #{selling_price}, delivery_price = #{delivery_price}, 
+		selling_product = #{selling_product}, selling_product_quality = #{selling_product_quality},
+		 trade_phone_num = #{trade_phone_num}, mid_group_num = #{mid_group_num} 
+		 where selling_list_num = #{selling_list_num}
+	</update>
+	
+	<!-- 제품 삭제 -->
+	<update id="deleteProduct" parameterType="String">
+		update selling_list set selling_state = 3 where selling_list_num = #{selling_list_num}
+	</update>
+	
+	<!-- 제품 판매 중지 --> 
+	<update id="stopSell" parameterType="String">
+		update selling_list set selling_state = 0 where selling_list_num = #{selling_list_num}
+	</update>
+	
+	<!-- 내가 등록한 제품 리스트  -->
+	<select id="myProduct" resultType="com.bit.mybatis.SellingListVO" parameterType="String">
+		select * from selling_list where seller_id=#{seller_id} and selling_state != 3 and selling_state != 5
+	</select>	
+	
+	<!-- 글 신고(결과 대기) -->
+	<update id="troubleProduct" parameterType="String">
+		update selling_list set selling_state = 4 where selling_list_num = #{selling_list_num}
+	</update>
+	
+	<!-- 글 신고(삭제 처리) -->
+	<update id="troubleProductDecide" parameterType="String">
+		update selling_list set selling_state=5 where selling_list_num = #{selling_list_num}
+	</update>
+	
+	<!-- 구매 내역 조회 -->
+	<select id="tradeAllList" parameterType="String" resultType="com.bit.mybatis.TradeVO">
+		<!-- select * from trade where purchaser_id = #{purchaser_id} -->
+		SELECT t.*, s.selling_product, s.selling_list_title
+       	FROM  trade t, selling_list s
+       	WHERE t.selling_list_num = s.selling_list_num AND t.purchaser_id = #{purchaser_id}
+		<!-- select * from trade, selling_list where trade.selling_list_num = selling_list.selling_list_num
+		and purchaser_id = #{purchaser_id}; -->
+	</select>	
+	
+	<!-- 구매 신청(입금 대기) -->
+	<insert id="tradeStart" parameterType="com.bit.mybatis.TradeVO">
+		insert into trade (trade_num, selling_list_num, trade_way, trade_price, purchaser_id, seller_id, purchase_count, purchase_date, delivery_price, trade_state) 
+		values (trade_seq.nextval, #{selling_list_num}, 'd', #{trade_price}, #{purchaser_id}, #{seller_id}, #{purchase_count}, sysdate, #{delivery_price}, 1)	
+	</insert>
+
+	<!-- 구매 과정 진행 -->
+	<update id="tradeProgress" parameterType="com.bit.mybatis.TradeVO">
+		update trade set trade_state=#{trade_state} where trade_num = #{trade_num}
+	</update>
+	
+	
+	
+	<!-- qa 등록 -->
+	<insert id="insertQA" parameterType="com.bit.mybatis.QnAVO">
+		insert into Q_and_A values (qa_seq.nextval, #{qa_content}, #{qa_writer_id}, #{qa_pwd}, sysdate, 1, 0, #{qa_group})
+	</insert>
+	
+	<!-- qa 수정 -->
+	<update id="updateQA" parameterType="com.bit.mybatis.QnAVO">
+		update Q_and_A set qa_content = #{qa_content}, qa_group = #{qa_group} where qa_num = #{qa_num}	
+	</update>
+	
+	<!-- qa 삭제 -->
+	<update id="deleteQA" parameterType="String">
+		update Q_and_A set qa_state = 3 where qa_num = #{qa_num}	
+	</update>
+	
+	<!-- qa 상세 정보 -->
+	<select id="detailQA" parameterType="String" resultType="com.bit.mybatis.QnAVO">
+		select * from Q_and_A where qa_num = #{qa_num} and qa_state != 3
+	</select>
+	
+	<!-- qa 전체 리스트 -->
+	<select id="QAList" parameterType="String" resultType="com.bit.mybatis.QnAVO">
+		select * from Q_and_A where qa_writer_id = #{qa_writer_id} and qa_state != 3 order by qa_date desc
+	</select>
+	
+	<!-- 제품 댓글 작성 -->
+	<insert id="insertProductCmt">
+		insert into values (selling_cmt_seq.nextval, #{selling_cmt_writer}, #{selling_cmt_content}, sysdate, 1, #{selling_list_num}, 1, 1)
+	</insert>
+	
+	<!-- 제품 댓글 수정 -->
+	<!-- <update id="updateProductCmt">
+	
+	</update> -->
+	
+	<!-- 제품 댓글 삭제 -->
+	<!-- <update id="deleteProductCmt">
+	
+	</update> -->
+	
+	<!-- 제품 댓글 신고 -->
+	<!-- <update id="troubleProductCmt">
+	
+	</update> -->
+	
+	<!-- 제품 전체 댓글 가져오기 -->
+	<select id="detailComment" resultType="com.bit.mybatis.SellingCMTVO" parameterType="String">
+		select * from selling_cmt where selling_list_num=#{selling_list_num}
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

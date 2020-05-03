@@ -1,0 +1,86 @@
+@charset "UTF-8";
+
+body {
+	margin-top: -10px;
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+.bs-example {
+	/*margin: 20px;*/
+	background: linear-gradient( to top, white, skyblue );
+	
+}
+
+@media screen and (min-width: 768px) {
+	.dropdown:hover .dropdown-menu, .btn-group:hover .dropdown-menu {
+		display: block;
+	}
+	.dropdown-menu {
+		margin-top: 0;
+	}
+	.dropdown-toggle {
+		margin-bottom: 2px;
+	}
+	.navbar .dropdown-toggle, .nav-tabs .dropdown-toggle {
+		margin-bottom: 0;
+	}
+}
+
+
+
+@media screen and (max-width: 992px) {
+	#big_list {
+		margin-left: 15%
+	}
+}
+
+@media screen and (min-width: 992px) {
+	#big_list {
+		margin-left: 25%;
+	}
+}
+	
+@media screen and (min-width: 1199px) {
+	#big_list {
+		margin-left: 30%;
+	}
+}
+
+
+#title_div {
+	text-align: center;
+	background-color: none;
+	padding-bottom: 15px;
+	padding-top: 0px;
+	margin-top: 0px;
+}
+
+.state {
+	text-align: right;
+	padding-right: 30px;
+	padding-top: 13px;
+	text-decoration: none;
+}
+
+.state a {
+	margin-left: 9px;
+	text-decoration: none;
+	cursor: hand;
+}
+
+#title {
+	margin-top: 0px;	
+	text-align: center;
+	text-decoration: none;
+}
+
+
+
+
+/***************************************************************************/
+.login_dlg {
+	text-align: center;
+}
+
+

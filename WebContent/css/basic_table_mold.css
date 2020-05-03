@@ -1,0 +1,80 @@
+@charset "UTF-8";
+
+.text-arrangement {
+	margin-bottom: 40px;
+	text-align: center;
+}
+
+.table_div {
+	margin-top: 50px;
+	margin-left: 5%;
+	margin-right: 5%;
+}
+
+th {
+	vertical-align: middle !important;
+}
+
+input {
+	margin: 0;
+	padding: 0;
+	border-radius: 0.25em;
+	padding: 5px 20px 5px 20px;
+}
+
+select, textarea {
+	margin: 0;
+	padding: 0;
+	border-radius: 0.25em;
+	padding: 10px 20px 10px 20px;
+}
+
+input.full-width {
+	width: 100%;
+}
+
+select.full-width {
+	width: 100%;
+}
+
+textarea.full-width {
+	width: 100%;
+	box-sizing: border-box;
+	overflow: auto;
+	resize: vertical;
+	cursor: text;
+}
+
+input[type=file].full_width {
+	width: 100%;
+	padding-left: 0px;
+}
+
+tfoot> tr > td.btn_align {
+	text-align: center;
+}
+
+#mypage_record_div {
+	margin-top: 30px;
+	margin-bottom: 50px;
+}
+
+thead tr.title > th {
+	text-align: center !important;
+}
+
+tbody tr.list > td {
+	text-align: center !important;
+}
+
+pre.default {
+	border: none !important;
+	background-color: #fff !important;
+	text-align: left !important;
+	margin: 0 !important;
+  	padding: 0 !important;
+   	font-size: 100% !important;
+   	font: inherit !important;
+   	vertical-align: baseline !important;
+	
+}
